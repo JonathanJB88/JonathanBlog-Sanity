@@ -1,8 +1,10 @@
 import {BookIcon} from '@sanity/icons'
 import {format, parseISO} from 'date-fns'
-import {defineField, defineType} from 'sanity'
+import {defineField, defineType, SlugRule, SlugValidationContext, StringRule} from 'sanity'
 
 import authorType from './author'
+import categoryType from './category'
+import tagType from './tag'
 
 export default defineType({
   name: 'post',
@@ -14,7 +16,7 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (rule) => rule.required(),
+      validation: (rule: StringRule) => rule.required(),
     }),
     defineField({
       name: 'slug',
@@ -23,9 +25,10 @@ export default defineType({
       options: {
         source: 'title',
         maxLength: 96,
-        isUnique: (value, context) => context.defaultIsUnique(value, context),
+        isUnique: (value: string, context: SlugValidationContext) =>
+          context.defaultIsUnique(value, context),
       },
-      validation: (rule) => rule.required(),
+      validation: (rule: SlugRule) => rule.required(),
     }),
     defineField({
       name: 'content',
@@ -57,6 +60,18 @@ export default defineType({
       title: 'Author',
       type: 'reference',
       to: [{type: authorType.name}],
+    }),
+    defineField({
+      name: 'categories',
+      title: 'Categories',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: categoryType.name}]}],
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: tagType.name}]}],
     }),
   ],
   preview: {
