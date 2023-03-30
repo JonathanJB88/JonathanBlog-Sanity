@@ -34,7 +34,30 @@ export default defineType({
       name: 'content',
       title: 'Content',
       type: 'array',
-      of: [{type: 'block'}],
+      of: [
+        {
+          title: 'Block',
+          type: 'block',
+          of: [{type: 'imageWithAlt'}],
+          styles: [
+            {title: 'Normal', value: 'normal'},
+            {title: 'H1', value: 'h1'},
+            {title: 'H2', value: 'h2'},
+            {title: 'H3', value: 'h3'},
+            {title: 'Quote', value: 'blockquote'},
+          ],
+          lists: [
+            {
+              title: 'Bullet',
+              value: 'bullet',
+            },
+            {
+              title: 'Numbered',
+              value: 'number',
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'excerpt',
